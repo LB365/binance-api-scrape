@@ -1,4 +1,5 @@
 import click
+import os
 
 from sqlalchemy import create_engine
 from inireader import reader
@@ -6,12 +7,20 @@ from inireader import reader
 from binance_api_scrape.schema import init_db, insert_db
 from binance_api_scrape.scraper import Scraper
 
-cfg = reader('binance.cfg')
-DBURI = cfg['postgresql']['dburi']
+CFG = reader('binance.cfg')
+DBURI = CFG['postgresql']['dburi']
+DBURI = os.environ.get('DATABASE_URL')
 
 @click.group()
 def binance():
     pass
+
+def dburi(heroku):
+    if not heroku:
+        return CFG['postgresql']['dburi']
+    else:
+        return os.environ.get('DATABASE_URL')
+    
 
 @binance.command('ping')
 def ping():
@@ -20,15 +29,18 @@ def ping():
     print(scraper.ping())
 
 @binance.command('init-db')
-def initdb():
+@click.opton('-heroku', is_flag=True)
+def initdb(heroku):
     # register all component schemas
-    engine = create_engine(DBURI)
+    mydburi = dburi(heroku)
+    engine = create_engine(mydburi)
     init_db(engine)
 
 
-def _scrape():
+def _scrape(heroku):
     scraper = Scraper()
-    engine = create_engine(DBURI)
+    mydburi = dburi(heroku)
+    engine = create_engine(mydburi)
     mark = scraper.mark('BTC-210430-68000-C')
     print(mark)
     with engine.begin() as cn:
@@ -43,6 +55,7 @@ def _scrape():
 
 
 @binance.command('scrape')
-def scrape():
-    return _scrape()
+@click.opton('-heroku', is_flag=True)
+def scrape(heroku):
+    return _scrape(heroku)
 
