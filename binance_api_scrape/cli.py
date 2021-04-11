@@ -26,7 +26,7 @@ def ping():
     print(scraper.ping())
 
 @binance.command('init-db')
-@click.opton('-heroku', is_flag=True)
+@click.option('-heroku', is_flag=True)
 def initdb(heroku):
     # register all component schemas
     mydburi = dburi(heroku)
@@ -52,7 +52,7 @@ def _scrape(heroku):
 
 
 @binance.command('scrape')
-@click.opton('-heroku', is_flag=True)
+@click.option('-heroku', is_flag=True)
 def scrape(heroku):
     return _scrape(heroku)
 
