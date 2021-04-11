@@ -1,7 +1,8 @@
 from setuptools import find_packages, setup
 from pathlib import Path
 HERE = Path(__file__).parent
-REQUIREMENTS = open(HERE / 'requirements.txt', 'rb').readlines()
+with open(HERE / 'requirements.txt', 'r') as f:
+    REQUIREMENTS = [line.strip() for line in f]
 
 
 setup(
