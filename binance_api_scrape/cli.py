@@ -46,7 +46,7 @@ def mark(heroku, ts=None, *args, **kwargs):
     mydburi = dburi(heroku)
     engine = create_engine(mydburi)
     datas = scraper.mark()
-    print(pd.DataFrame.from_records(datas['data']))
+    print(pd.DataFrame.from_records(datas['data']).head(3))
     with engine.begin() as cn:
         for data in datas['data']:
             data['ts'] = datas['ts'] if ts is None else ts
@@ -62,10 +62,13 @@ def ticker(heroku, ts=None, *args, **kwargs):
     mydburi = dburi(heroku)
     engine = create_engine(mydburi)
     datas = scraper.ticker()
-    print(pd.DataFrame.from_records(datas['data']))
+    print(pd.DataFrame.from_records(datas['data']).head(3))
     with engine.begin() as cn:
         for data in datas['data']:
             data['ts'] = datas['ts'] if ts is None else ts
+            data['openPrice'] = data['open']
+            data['highPrice'] = data['high']
+            data['lowPrice'] = data['low']
             insert_db(
                 cn,
                 'market.ticker',
@@ -78,7 +81,7 @@ def optioninfo(heroku, *args, **kwargs):
     mydburi = dburi(heroku)
     engine = create_engine(mydburi)
     datas = scraper.option_info()
-    print(pd.DataFrame.from_records(datas['data']))
+    print(pd.DataFrame.from_records(datas['data']).head(3))
     with engine.begin() as cn:
         for data in datas['data']:
             insert_db(
