@@ -54,7 +54,7 @@ class Scraper:
         return pd.Timestamp(self.date(), tz=self.tz)
 
     def date(self):
-        return ts(self.time)
+        return ts(self.time())
 
     @server_time
     def option_info(self):
