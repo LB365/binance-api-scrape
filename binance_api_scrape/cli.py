@@ -13,6 +13,12 @@ DBURI = cfg['postgresql']['dburi']
 def binance():
     pass
 
+@binance.command('ping')
+def ping():
+    # register all component schemas
+    scraper = Scraper()
+    print(scraper.ping())
+
 @binance.command('init-db')
 def initdb():
     # register all component schemas

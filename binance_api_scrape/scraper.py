@@ -39,6 +39,11 @@ class Scraper:
         json = response.json()
         return return_data(json)
 
+    def ping(self):
+        response = requests.get(self.base_url + self.endpoints['ping'])
+        return response.json()['msg']
+
+
     def time(self):
         return self.fetch_json(self.endpoints['time'])
 
