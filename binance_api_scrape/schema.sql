@@ -1,4 +1,5 @@
 create table if not exists market.optioninfo (
+  id serial primary key,
   ts timestamptz not null,
   underlying text not null,
   quoteAsset text not null,
@@ -12,6 +13,7 @@ create table if not exists market.optioninfo (
 );
 
 create table if not exists market.mark (
+  id serial primary key,
   ts timestamptz not null,
   symbol text not null,
   markPrice real not null,
@@ -27,6 +29,7 @@ create table if not exists market.mark (
 );
 
 create table if not exists market.ticker (
+  id serial primary key,
   ts timestamptz not null,
   symbol text not null,
   priceChange real not null,
