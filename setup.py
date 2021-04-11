@@ -10,7 +10,6 @@ REQUIREMENTS = [
     "requests",
     "psycopg2",
     "tqdm",
-    "itertools",
     "inireader",
 ]
 
