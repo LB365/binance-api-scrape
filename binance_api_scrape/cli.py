@@ -9,7 +9,10 @@ from tqdm.contrib.concurrent import thread_map
 
 from binance_api_scrape.schema import init_db, insert_db
 from binance_api_scrape.scraper import Scraper
+from binance_api_scrape import OPTION_INFO_FIELDS, MARK_FIELDS, TICKER_FIELDS
 
+def filter_dict(d, keys):
+    return dict(filter(lambda x: x[0] in keys, d.items()))
 
 @click.group()
 def binance():
@@ -53,7 +56,7 @@ def mark(heroku, ts=None, *args, **kwargs):
             insert_db(
                 cn,
                 'market.mark',
-                data
+                filter_dict(data, MARK_FIELDS)
             )
 
 
@@ -63,7 +66,6 @@ def ticker(heroku, ts=None, *args, **kwargs):
     engine = create_engine(mydburi)
     datas = scraper.ticker()
     print(pd.DataFrame.from_records(datas['data']).head(3))
-    fields_delete = ['firstTradeId', 'tradeCount', 'strikePrice']
     fields = ['open', 'high', 'low']
     with engine.begin() as cn:
         for data in datas['data']:
@@ -71,12 +73,10 @@ def ticker(heroku, ts=None, *args, **kwargs):
             for field in fields:
                 data[field + 'Price'] = data[field]
                 del data[field]
-            for to_del in fields_delete:
-                del data[to_del]
             insert_db(
                 cn,
                 'market.ticker',
-                data
+                filter_dict(data, TICKER_FIELDS)
             )
 
 
@@ -91,7 +91,7 @@ def optioninfo(heroku, *args, **kwargs):
             insert_db(
                 cn,
                 'market.optioninfo',
-                data
+                filter_dict(data, OPTION_INFO_FIELDS)
             )
 
 
