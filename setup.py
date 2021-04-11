@@ -1,4 +1,8 @@
 from setuptools import find_packages, setup
+from pathlib import Path
+HERE = Path(__file__).parent
+REQUIREMENTS = open(HERE / 'requirements.txt', 'rb').readlines()
+
 
 setup(
     name='binance-api-scrape',
@@ -6,18 +10,10 @@ setup(
     version='0.1.0',
     description='scrape binance option market data',
     packages=find_packages(include=['binance_api_scrape']),
-    python_requires='<=3.9',
-     entry_points={
+    entry_points={
         'console_scripts': [
             'binance=binance_api_scrape.cli:binance',
         ]
     },
-    install_requires=[
-        'pytest',
-        'pandas',
-        'numpy',
-        'sqlalchemy',
-        'sqlhelp',
-        'inireader',
-    ],
+    install_requires=REQUIREMENTS,
 )
