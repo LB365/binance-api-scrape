@@ -13,6 +13,9 @@ ENDPOINTS = {
     'ticker': '/vapi/v1/ticker',
 }
 
+def ts(timestamp):
+    return datetime.fromtimestamp(int(timestamp / 1e3))
+
 
 def return_data(json):
     if not json['code']:
@@ -51,7 +54,7 @@ class Scraper:
         return pd.Timestamp(self.date(), tz=self.tz)
 
     def date(self):
-        return datetime.fromtimestamp(int(self.time() / 1e3))
+        return ts(self.time)
 
     @server_time
     def option_info(self):

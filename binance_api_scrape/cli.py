@@ -8,7 +8,7 @@ import pandas as pd
 from tqdm.contrib.concurrent import thread_map
 
 from binance_api_scrape.schema import init_db, insert_db
-from binance_api_scrape.scraper import Scraper
+from binance_api_scrape.scraper import Scraper, ts
 from binance_api_scrape import OPTION_INFO_FIELDS, MARK_FIELDS, TICKER_FIELDS
 
 def filter_dict(d, keys):
@@ -88,6 +88,7 @@ def optioninfo(heroku, *args, **kwargs):
     print(pd.DataFrame.from_records(datas['data']).head(3))
     with engine.begin() as cn:
         for data in datas['data']:
+            data['expiryDate'] = ts(data['expiryDate']) 
             insert_db(
                 cn,
                 'market.optioninfo',
