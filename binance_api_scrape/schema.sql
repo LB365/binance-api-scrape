@@ -4,7 +4,7 @@ create table if not exists market.optioninfo (
   quoteAsset text not null,
   symbol text not null,
   unit int not null,
-  minQty int not null,
+  minQty real not null,
   side text not null,
   leverage real not null,
   strikePrice real not null,
