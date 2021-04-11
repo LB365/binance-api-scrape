@@ -54,7 +54,7 @@ class Scraper:
         return datetime.fromtimestamp(int(self.time() / 1e3))
 
     @server_time
-    def exchange_info(self):
+    def option_info(self):
         return self.fetch_json(self.endpoints['optionInfo'])
 
     @server_time

@@ -1,6 +1,5 @@
 create table if not exists market.optioninfo (
   id serial primary key,
-  ts timestamptz not null,
   underlying text not null,
   quoteAsset text not null,
   symbol text not null,

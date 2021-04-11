@@ -35,25 +35,51 @@ def initdb(heroku):
     init_db(engine)
 
 
-def _scrape(heroku):
+def mark(heroku, ts=None):
     scraper = Scraper()
     mydburi = dburi(heroku)
     engine = create_engine(mydburi)
-    mark = scraper.mark('BTC-210430-68000-C')
-    print(mark)
+    mark = scraper.mark()
     with engine.begin() as cn:
-        for m in mark['data']:
-            m['ts'] = mark['ts']
+        for data in mark['data']:
+            data['ts'] = ticker['ts'] if ts is None else ts
             insert_db(
                 cn,
                 'market.mark',
-                m
+                data
             )
         
 
+def ticker(heroku, ts=None):
+    scraper = Scraper()
+    mydburi = dburi(heroku)
+    engine = create_engine(mydburi)
+    ticker = scraper.ticker()
+    with engine.begin() as cn:
+        for data in ticker['data']:
+            data['ts'] = ticker['ts'] if ts is None else ts
+            insert_db(
+                cn,
+                'market.ticker',
+                data
+            )
+
+def optioninfo(heroku):
+    scraper = Scraper()
+    mydburi = dburi(heroku)
+    engine = create_engine(mydburi)
+    ticker = scraper.option_info()
+    with engine.begin() as cn:
+        for data in ticker['data']:
+            insert_db(
+                cn,
+                'market.optioninfo',
+                data
+            )
 
 @binance.command('scrape')
+@click.option('-scraper',
+              type=click.Choice(['mark', 'ticker', 'optioninfo']))
 @click.option('-heroku', is_flag=True)
-def scrape(heroku):
-    return _scrape(heroku)
-
+def scrape(scraper, heroku):
+    return eval(scraper)(heroku)
