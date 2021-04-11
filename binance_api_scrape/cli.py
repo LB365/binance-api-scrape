@@ -63,13 +63,16 @@ def ticker(heroku, ts=None, *args, **kwargs):
     engine = create_engine(mydburi)
     datas = scraper.ticker()
     print(pd.DataFrame.from_records(datas['data']).head(3))
+    fields_delete = ['firstTradeId', 'tradeCount', 'strikePrice']
+    fields = ['open', 'high', 'low']
     with engine.begin() as cn:
         for data in datas['data']:
             data['ts'] = datas['ts'] if ts is None else ts
-            fields = ['open', 'high', 'low']
             for field in fields:
                 data[field + 'Price'] = data[field]
                 del data[field]
+            for to_del in fields_delete:
+                del data[to_del]
             insert_db(
                 cn,
                 'market.ticker',

@@ -41,6 +41,7 @@ create table if not exists market.ticker (
   volume real not null,
   amount real not null,
   openTime real not null,
-  closeTime real not null
+  closeTime real not null,
+  expectedExercisePrice real not null,
 );
 
