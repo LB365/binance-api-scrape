@@ -103,7 +103,7 @@ def scrape(scraper, heroku):
     return eval(scraper)(heroku)
 
 
-@binance.command('scrape_all')
+@binance.command('scrape-all')
 @click.option('-heroku', is_flag=True)
 def scrape(heroku):
     scraper = Scraper()
