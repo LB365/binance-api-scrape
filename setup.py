@@ -9,6 +9,8 @@ REQUIREMENTS = [
     "click",
     "requests",
     "psycopg2",
+    "tqdm",
+    "itertools",
     "inireader",
 ]
 
