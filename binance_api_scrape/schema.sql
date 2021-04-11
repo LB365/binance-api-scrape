@@ -8,7 +8,7 @@ create table if not exists market.optioninfo (
   side text not null,
   leverage real not null,
   strikePrice real not null,
-  expiryDate int not null
+  expiryDate timestamptz not null
 );
 
 create table if not exists market.mark (
