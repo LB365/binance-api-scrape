@@ -7,17 +7,14 @@ from inireader import reader
 from binance_api_scrape.schema import init_db, insert_db
 from binance_api_scrape.scraper import Scraper
 
-CFG = reader('binance.cfg')
-DBURI = CFG['postgresql']['dburi']
-DBURI = os.environ.get('DATABASE_URL')
-
 @click.group()
 def binance():
     pass
 
 def dburi(heroku):
     if not heroku:
-        return CFG['postgresql']['dburi']
+        cfg = reader('binance.cfg')
+        return cfg['postgresql']['dburi']
     else:
         return os.environ.get('DATABASE_URL')
     
