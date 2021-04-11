@@ -66,9 +66,10 @@ def ticker(heroku, ts=None, *args, **kwargs):
     with engine.begin() as cn:
         for data in datas['data']:
             data['ts'] = datas['ts'] if ts is None else ts
-            data['openPrice'] = data['open']
-            data['highPrice'] = data['high']
-            data['lowPrice'] = data['low']
+            fields = ['open', 'high', 'low']
+            for field in fields:
+                data[field + 'Price'] = data[field]
+                del data[field]
             insert_db(
                 cn,
                 'market.ticker',
