@@ -16,7 +16,8 @@ def dburi(heroku):
         cfg = reader('binance.cfg')
         return cfg['postgresql']['dburi']
     else:
-        return os.environ.get('DATABASE_URL')
+        url = os.environ.get('DATABASE_URL').replace('postgres', 'postgresql')
+        return url
     
 
 @binance.command('ping')
