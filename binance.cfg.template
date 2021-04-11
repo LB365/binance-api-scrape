@@ -1,0 +1,3 @@
+
+[postgresql]
+dburi = postgresql://<localhost>/postgres
