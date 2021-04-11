@@ -18,7 +18,7 @@ def init_db(engine, drop=False):
     """
     if drop:
         with engine.begin() as cn:
-            cn.execute('drop schema if exists prices cascade;')
+            cn.execute('drop schema if exists market cascade;')
     with engine.begin() as cn:
         cn.execute('create schema if not exists market;')
         cn.execute(sqlfile(SQLFILE))

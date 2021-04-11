@@ -1,7 +1,0 @@
-pandas
-sqlalchemy
-sqlhelp
-click
-requests
-psycopg2
-inireader

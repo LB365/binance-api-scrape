@@ -1,9 +1,16 @@
 from setuptools import find_packages, setup
 from pathlib import Path
 HERE = Path(__file__).parent
-with open(HERE / 'requirements.txt', 'r') as f:
-    REQUIREMENTS = [line.strip() for line in f]
 
+REQUIREMENTS = [
+    "pandas",
+    "sqlalchemy",
+    "sqlhelp",
+    "click",
+    "requests",
+    "psycopg2",
+    "inireader",
+]
 
 setup(
     name='binance-api-scrape',
